@@ -1,0 +1,23 @@
+.addalimento{
+    display: flex;/*alinha itens ao meio*/
+    flex-direction: column;
+    height: 100%;
+    margin: -35px 0 0 0;
+    padding-top: 65px;
+
+}
+
+.addalimento .form{
+    display: flex;/*alinha itens ao meio*/
+    align-items: center;/*alinha itens ao meio*/
+    justify-content: center;/*alinha itens ao meio*/
+    flex-direction: column;
+    background: wheat;
+    border-radius: 10px;
+    margin: 10px;
+    height: 40%;
+}
+
+.addalimento .form .buton{
+    width: 180px;
+}

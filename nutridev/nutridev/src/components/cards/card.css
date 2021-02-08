@@ -1,0 +1,24 @@
+.card {
+    /*background: linear-gradient(to right, #0c2206, rgb(6, 48, 29));*/
+    background: #e5e5eb;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+}
+
+.card .title {
+    background: wheat;
+
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    color: black;
+}
+
+.card .content {
+    display: flex;
+    background-color: #fff;
+    color: rgb(0, 0, 0);
+    margin: 10px;
+}

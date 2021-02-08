@@ -1,0 +1,8 @@
+.home{
+    display: flex;/*alinha itens ao meio*/
+    justify-content: center;/*alinha itens ao meio*/
+    height: 100%;
+    margin: -45px 0 0 0;
+    padding-top: 65px;
+
+}

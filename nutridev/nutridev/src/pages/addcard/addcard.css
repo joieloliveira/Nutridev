@@ -1,0 +1,35 @@
+.addcard{
+    display: flex;/*alinha itens ao meio*/
+    height: 100%;
+    margin: -45px 0 0 0;
+    padding-top: 65px;
+    flex-direction: column;
+}
+
+.addcard .p{
+    display: flex;
+    justify-content: center;
+    margin: 5px 0 0 0;
+}
+
+.addcard .form{
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+    border-radius: 10px;
+    margin: 10px;
+}
+
+.addcard .form .add{
+    background: wheat;
+    padding: 10px;
+}
+
+.addcard .form .table-card #hcard{
+    margin: 20px;
+}
+.addcard .form .table-card .table #table{
+    font-size: 70%;
+}
+
+
