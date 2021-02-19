@@ -10,11 +10,26 @@ import {
   Input,
 } from "reactstrap";
 
+var cardtotal=[]
+
+let click = false
+var nome2=[]
+var gramas2=[]
+var carbo2=[]
+var proteina2=[]
+var gordura2=[]
+var kcal2=[]
+var valor2=[]
+
 function AddCard() {
     // criei uma variável local q armazena o estado local da lista
     const [arrayAlimentos, setArrayAlimentos] = useState({});
 
-    const [novoCard, setNovoCard] = useState([])
+    const [novoCard, setNovoCard] = useState({})
+
+    const [refeicao, setRefeicao] = useState({})
+
+    const [cadNovoCard, setCadNovoCard] = useState({})
 
     const [chosenFood, setChosenFood] = useState({
         nome: "",
@@ -26,6 +41,12 @@ function AddCard() {
         const alimentos = await getArrayAlimentos()
         setArrayAlimentos(alimentos)
     }, []);
+
+    useEffect(async () => {
+      setCadNovoCard({
+        ...cadNovoCard,
+        refeicao: refeicao.refeicao,})
+  }, [refeicao]);
 
     const getArrayAlimentos = async () => {
         //Arrow function async q busca os dados
@@ -40,9 +61,16 @@ function AddCard() {
 
     //console.log(arrayAlimentos);
 
-    const onChangeInputCard = (e) =>
-        setChosenFood({ ...chosenFood, [e.target.name]: e.target.value });
+    const onChangeInputCard = (e) =>{
+      e.preventDefault()
+      setChosenFood({ ...chosenFood, [e.target.name]: e.target.value });
+    }
 
+    const onChangeInputRefeicao = (e) =>{
+      e.preventDefault()
+      setRefeicao({ ...refeicao, [e.target.name]: e.target.value });
+    }
+        
     const createCard = async (e) => {
         e.preventDefault();
         //filtrar o _id de arrayAlimentos
@@ -70,38 +98,6 @@ function AddCard() {
         .filter(p => p.nome === chosenFood.nome) // inline
         .map(p => p.valor);
         
-
-        var nome2=[]
-        var gramas2=[]
-        var carbo2=[]
-        var proteina2=[]
-        var gordura2=[]
-        var kcal2=[]
-        var valor2=[]
-        if(gramas2!=""){
-          nome2.concat(novoCard.nome)
-          gramas2.concat(novoCard.gramas)
-          carbo2.concat(novoCard.carbo)
-          proteina2.concat(novoCard.proteina)
-          gordura2.concat(novoCard.gordura)
-          kcal2.concat(novoCard.kcal)
-          valor2.concat(novoCard.valor)
-        }else{
-          nome2.push(novoCard.nome)
-          gramas2.push(novoCard.gramas)
-          carbo2.push(novoCard.carbo)
-          proteina2.push(novoCard.proteina)
-          gordura2.push(novoCard.gordura)
-          kcal2.push(novoCard.kcal)
-          valor2.push(novoCard.valor)
-        }
-
-        
-
-        //let idx = (arrayAlimentos != null && arrayAlimentos.alimentos != null && arrayAlimentos.alimentos.indexOf(chosenFood.nome));
-        //converte objt em array
-        //let arrayAlimentosArray  = arrayAlimentos != null && arrayAlimentos.alimentos != null && arrayAlimentos.alimentos.map(item => [item._id,item.nome,item.gramas,item.carbo,item.proteina])
-        
         //regra de 3 pra monta a nova tabela
         const a = parseInt(chosenFood.gramas);
         const b = parseInt(filterGramas[0]);
@@ -120,12 +116,99 @@ function AddCard() {
             valor: (parseInt(filterValor) * total).toFixed(2),
   
         });
-        console.log(novoCard);
+
+        setCadNovoCard({
+          ...cadNovoCard,
+          refeicao: refeicao.refeicao,
+          alimentos: nome2,
+          gramas: gramas2,
+          carbo: carbo2,
+          proteina: proteina2,
+          gordura: gordura2,
+          kcal: kcal2,
+          valor: valor2,
+          total: cardtotal,
+        });
+        click=true
     };
+
+    if(click){
+      nome2.push(novoCard.nome)
+      gramas2.push(novoCard.gramas)
+      carbo2.push(novoCard.carbo)
+      proteina2.push(novoCard.proteina)
+      gordura2.push(novoCard.gordura)
+      kcal2.push(novoCard.kcal)
+      valor2.push(novoCard.valor)
+      click=false
+    }
+    //soma a tabela==============================================
+    var totalGramas = 0
+    for (let i=0; i<nome2.length; i++){
+      if(nome2.length==0){
+        totalGramas=parseInt(gramas2[i])
+      }else{
+        totalGramas=totalGramas+parseInt(gramas2[i])
+      }
+    }
+    var totalCarbo = 0
+    for (let i=0; i<nome2.length; i++){
+      if(nome2.length==0){
+        totalCarbo=parseInt(carbo2[i])
+      }else{
+        totalCarbo=totalCarbo+parseInt(carbo2[i])
+      }
+    }
+    var totalProteina = 0
+    for (let i=0; i<nome2.length; i++){
+      if(nome2.length==0){
+        totalProteina=parseInt(proteina2[i])
+      }else{
+        totalProteina=totalProteina+parseInt(proteina2[i])
+      }
+    }
+    var totalGordura = 0
+    for (let i=0; i<nome2.length; i++){
+      if(nome2.length==0){
+        totalGordura=parseInt(gordura2[i])
+      }else{
+        totalGordura=totalGordura+parseInt(gordura2[i])
+      }
+    }
+    var totalKcal = 0
+    for (let i=0; i<nome2.length; i++){
+      if(nome2.length==0){
+        totalKcal=parseInt(kcal2[i])
+      }else{
+        totalKcal=totalKcal+parseInt(kcal2[i])
+      }
+    }
+    var totalValor = 0
+    for (let i=0; i<nome2.length; i++){
+      if(nome2.length==0){
+        totalValor=parseInt(valor2[i])
+      }else{
+        totalValor=totalValor+parseInt(valor2[i])
+      }
+    }
+    //=========================================================== 
+    let rows = []
+    for (let i=0; i<nome2.length; i++){
+      rows.push(
+        <tr className="table" key={rows.toString()}>
+          <td>{nome2[i]}</td>
+          <td>{gramas2[i]}</td>
+          <td>{carbo2[i]}</td>
+          <td>{proteina2[i]}</td>
+          <td>{gordura2[i]}</td>
+          <td>{kcal2[i]}</td>
+          <td>{valor2[i]}</td>
+        </tr>
+      )
+    }
 
     const renderList = () =>
       <div className="table" key={novoCard.toString()}>
-        
         <table id="table">
             <thead>
                 <tr>
@@ -139,19 +222,20 @@ function AddCard() {
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>{novoCard.nome}</td>
-                    <td>{novoCard.gramas}</td>
-                    <td>{novoCard.carbo}</td>
-                    <td>{novoCard.proteina}</td>
-                    <td>{novoCard.gordura}</td>
-                    <td>{novoCard.kcal}</td>
-                    <td>{novoCard.valor}</td>
-                </tr>
+              {rows}
+              <tr>
+                <td>Total</td>
+                <td>{totalGramas}</td>
+                <td>{totalCarbo}</td>
+                <td>{totalProteina}</td>
+                <td>{totalGordura}</td>
+                <td>{totalKcal}</td>
+                <td>{totalValor}</td>
+              </tr>
             </tbody>
         </table>
       </div>
-
+      
     const renderListFoods = () => (
         <Input
             type="select"
@@ -165,6 +249,38 @@ function AddCard() {
         </Input>
     )
 
+  //cadastra card==============================================
+  const sendCard = async (e) => {
+    e.preventDefault();
+
+    cardtotal.push(
+      totalGramas,totalCarbo,
+      totalProteina,totalGordura,
+      totalKcal,totalValor
+      )
+
+    try {
+      const res = await fetch("http://localhost:8080/cardcads", {
+          method: "POST",
+          body: JSON.stringify(cadNovoCard),
+          headers: { "Content-Type": "application/json" },
+      });
+
+      const responseEnv = await res.json();
+
+      if (responseEnv.error) {
+        console.log(responseEnv.message); 
+      } else {
+        console.log(responseEnv.message);
+      }
+    }catch(err) {
+      console.log("Erro: Card não cadastrada com sucesso, tente mais tarde!");
+    }
+  };
+  console.log(refeicao);
+  console.log(cadNovoCard);
+
+  //============================================================
   return (
     <div className="addcard">
       <div className="p">
@@ -197,8 +313,20 @@ function AddCard() {
         </div>
         <div className="table-card">
           <strong id="hcard">Card</strong>
-          <Card titulo="Café da manhã">
+          <Card titulo=
+            {<Input onChange={onChangeInputRefeicao} type="select" name="refeicao" id="refeicao">
+              <option>Refeição</option>
+              <option>Café</option>
+              <option>Almoço</option>
+              <option>Lanche</option>
+              <option>Jantar</option>
+            </Input>}>
               {renderList()}
+              <form className="form" onSubmit={sendCard}>
+                <Button className="buton" type="submit" outline color="danger">
+                  Salvar Card
+                </Button>
+              </form>
           </Card>
         </div>
       </div>
@@ -206,30 +334,3 @@ function AddCard() {
   );
 }
 export default AddCard;
-
-/*
-var nome2=[]
-var gramas2=[]
-var carbo2=[]
-var proteina2=[]
-var gordura2=[]
-var kcal2=[]
-var valor2=[]
-if(gramas2!=""){
-  nome2.concat(novoCard.nome)
-  gramas2.concat(novoCard.gramas)
-  carbo2.concat(novoCard.carbo)
-  proteina2.concat(novoCard.proteina)
-  gordura2.concat(novoCard.gordura)
-  kcal2.concat(novoCard.kcal)
-  valor2.concat(novoCard.valor)
-}else{
-  nome2.push(novoCard.nome)
-  gramas2.push(novoCard.gramas)
-  carbo2.push(novoCard.carbo)
-  proteina2.push(novoCard.proteina)
-  gordura2.push(novoCard.gordura)
-  kcal2.push(novoCard.kcal)
-  valor2.push(novoCard.valor)
-}
-*/

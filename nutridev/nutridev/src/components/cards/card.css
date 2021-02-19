@@ -8,17 +8,27 @@
 }
 
 .card .title {
+    display: flex;/*alinha itens ao meio*/
+    align-items: center;/*alinha itens ao meio*/
+    justify-content: center;/*alinha itens ao meio*/
     background: wheat;
-
-    padding: 5px;
-    display: flex;
-    justify-content: center;
+    padding: 5px 168px 5px 168px;
     color: black;
 }
 
 .card .content {
     display: flex;
+    flex-direction: column;
     background-color: #fff;
     color: rgb(0, 0, 0);
     margin: 10px;
+    font-size: 68%;
+}
+
+.cards{
+    display: flex;/*alinha itens ao meio*/
+    height: 100%;
+    margin: -45px 0 0 0;
+    padding-top: 65px;
+    flex-direction: column;
 }

@@ -5,6 +5,9 @@ const cors = require('cors');
 require('./models/Alimentos');
 const Alimento = mongoose.model('Alimento');
 
+require('./models/CardCads');
+const CardCad = mongoose.model('CardCad');
+
 const app = express();
 
 app.use(express.json());
@@ -25,7 +28,7 @@ mongoose.connect('mongodb://localhost/nutridev', {
 }).catch((err) => {
     console.log("Erro: Conexão com o BD MongoDB não realizado com sucesso: " + err);
 });
-
+//Carregar alimentos===========================================
 app.get('/alimentos', async (req, res) => {
     // return res.json({alimentos:[{
     //     _id:1,
@@ -56,7 +59,22 @@ app.get('/alimentos', async (req, res) => {
         
     });
 });
-
+//Carregar cards===========================================
+app.get('/cardcads', async (req, res) => {
+    await CardCad.find({}).then((cardcads) => {
+        return res.json({
+            error: false,
+            cardcads
+        });
+    }).catch((err) => {
+        return res.status(400).json({
+            error: true,
+            message: "Nenhum resgistro encontrado!"
+        });
+        
+    });
+});
+//cadastrar alimento===========================================
 app.post('/alimentos', async (req, res) => {
 
     await sleep(1000);
@@ -79,7 +97,30 @@ app.post('/alimentos', async (req, res) => {
         message: "Alimento cadastrada com sucesso!"
     });
 });
+//cadastrar card===========================================
+app.post('/cardcads', async (req, res) => {
 
+    await sleep(1000);
+
+    function sleep(ms){
+        return new Promise((resolve) => {
+            setTimeout(resolve, ms);
+        });
+    }
+
+    await CardCad.create(req.body, (err) => {
+        if (err) return res.status(400).json({
+            error: true,
+            message: "Erro: Card não cadastrada com sucesso!"
+        });
+    });
+
+    return res.json({
+        error: false,
+        message: "Card cadastrada com sucesso!"
+    });
+});
+//Inicia servidos============================================
 app.listen(8080, () => {
     console.log("Servidor iniciado na porta 8080: http://localhost:8080");
 });
